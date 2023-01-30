@@ -1,4 +1,7 @@
-# todo: setup celery app
+from podtranscribe.app import create_celery
+
+celery = create_celery()
+
 
 def _download_episode(episode_url):
     """async task to download episodes from a URL, 

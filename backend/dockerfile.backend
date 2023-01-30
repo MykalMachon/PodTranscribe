@@ -17,5 +17,5 @@ EXPOSE ${PORT}
 # copy over the podtranscribe application
 COPY podtranscribe/ .
 
-
-CMD gunicorn
+WORKDIR /app/
+CMD gunicorn --workers=3 --timeout=0 --bind=0.0.0.0:5000 'podtranscribe.app:create_flask()'
