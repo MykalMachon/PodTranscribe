@@ -1,0 +1,17 @@
+# starting point for the python application
+FROM node:latest
+
+ENV PORT=$PORT_DEFAULT
+
+# install the application and python deps
+WORKDIR /app/podtranscribe
+RUN npm ci
+
+# set the timezone
+ENV TZ=America/Los_Angeles
+
+EXPOSE ${PORT}
+
+# copy over the podtranscribe application
+COPY podtranscribe/ .
+CMD npm run build && node ./dist/server/entry.mjs

@@ -1,0 +1,24 @@
+# starting point for the python application
+FROM python:3.8.10-slim-buster
+
+# install applicaiton deps
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get -y install --no-install-recommends ffmpeg
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# install the application and python deps
+WORKDIR /app/podtranscribe
+COPY requirements.txt requirements.txt
+
+RUN pip3 install -r requirements.txt
+
+# set the timezone
+ENV TZ=America/Los_Angeles
+
+EXPOSE ${PORT}
+
+# copy over the podtranscribe application
+COPY podtranscribe/ .
+
+WORKDIR /app/
+CMD celery -A podtranscribe.tasks.celery worker --loglevel=INFO --concurrency=3

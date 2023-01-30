@@ -1,0 +1,21 @@
+# starting point for the python application
+FROM python:3.8.10-slim-buster
+
+ENV PORT=$PORT_DEFAULT
+
+# install the application and python deps
+WORKDIR /app/podtranscribe
+COPY requirements.txt requirements.txt
+
+RUN pip3 install -r requirements.txt
+
+# set the timezone
+ENV TZ=America/Los_Angeles
+
+EXPOSE ${PORT}
+
+# copy over the podtranscribe application
+COPY podtranscribe/ .
+
+
+CMD gunicorn
